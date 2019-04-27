@@ -18,7 +18,10 @@ class Header extends Component {
           <NavLink className="nav-link" activeClassName="active" to={'/users/'}>Dashboard</NavLink>
         </li>
       </ul>
-      {isLoggedIn() ? 
+      <header className="App-title">
+        <h2>HOOKED</h2>
+      </header>
+      {isLoggedIn() ?
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <a className="nav-link">{ full_name }</a>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Login from './login';
+import Register from './register';
+import Success from './success';
 import { isLoggedIn } from '../../helpers/authentication';
 import Dashboard from '../dashboard';
 
@@ -8,6 +10,8 @@ class App extends Component {
   render() {
     return (
       <Switch>
+        <Route path="/register" component={Register} />
+        <Route path="/success" component={Success} />
         <Route path="/login" component={Login} />
         <Route path="" render={
           (props) => {

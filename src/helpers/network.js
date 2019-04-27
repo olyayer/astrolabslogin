@@ -22,11 +22,37 @@ function loginRequest({email, password}){
   });
 }
 
+
+function registerRequest({email, password, name}){
+  return new Promise((resolve, reject) => {
+    fetch("http://localhost:5000/users/register", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        name
+      })
+    }).then(response => {
+      response.json().then(json => {
+        if (!response.ok){
+          return reject(json);
+        }
+        resolve(json);
+      }).catch(e => reject(e));
+    }).catch(e => reject(e))
+  });
+}
+
+
+
 function getDashboard(){
   return new Promise((resolve, reject) => {
     fetch("http://localhost:5000/dashboard", {
       headers: {
-       'Authorization': getToken() 
+       'Authorization': getToken()
       }
     }).then(response => {
       if (!response.ok){
@@ -42,5 +68,6 @@ function getDashboard(){
 
 export {
   loginRequest,
+  registerRequest,
   getDashboard
 }
