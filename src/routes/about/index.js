@@ -1,9 +1,9 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useReducer } from 'react';
 import Layout from '../../components/Layout';
-import "../App.css";
-import Header from "../Header";
-import Movie from "../Movie";
-import Search from "../Search";
+import "../../App.css";
+import Header from "../../components/Header";
+import Movie from "../../components/Movie";
+import Search from "../../components/Search";
 
 
 const MOVIE_API_URL = "http://www.omdbapi.com/?i=tt3896198&apikey=fc1eaa7e";
@@ -40,11 +40,10 @@ const reducer = (state, action) => {
 };
 
 
-
 const AboutContent = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  const { movies, errorMessage, loading } = state;
   useEffect(() => {
     fetch(MOVIE_API_URL)
       .then(response => response.json())
@@ -55,13 +54,12 @@ const AboutContent = () => {
         });
       });
   }, []);
-
   const search = searchValue => {
     dispatch({
       type: "SEARCH_MOVIES_REQUEST"
     });
 
-  fetch(`https://www.omdbapi.com/?s=${searchValue}&apikey=4a3b711b`)
+    fetch(`https://www.omdbapi.com/?s=${searchValue}&apikey=fc1eaa7e`)
       .then(response => response.json())
       .then(jsonResponse => {
         if (jsonResponse.Response === "True") {
@@ -78,11 +76,7 @@ const AboutContent = () => {
       });
   };
 
-  const { movies, errorMessage, loading } = state;
-
-
-  return
-
+  return (
     <div className="row">
       <Search search={search} />
       <p className="App-intro">Sharing a few of our favourite movies</p>
@@ -92,20 +86,19 @@ const AboutContent = () => {
          ) : errorMessage ? (
           <div className="errorMessage">{errorMessage}</div>
         ) : (
-          movies.map((movie, index) => (
+          movies && movies.map((movie, index) => (
             <Movie key={`${index}-${movie.Title}`} movie={movie} />
           ))
         )}
       </div>
     </div>
+  )
 }
 
 
-class About extends Component {
-  render(){
+const About = () =>{
     return <Layout>
         <AboutContent />
       </Layout>
-  }
 }
 export default About;
